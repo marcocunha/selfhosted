@@ -14,7 +14,7 @@ services:
       - ${SELF_HOME_DIR}/portainer:/data
     env_file:
       - .env
-  
+
   # MariaDB
   # A database Nginx Proxy Manager and Umami
   db:
@@ -27,7 +27,7 @@ services:
       - ${SELF_HOME_DIR}/db:/docker-entrypoint-initdb.d # FIX entrypoint
     env_file:
       - .env
-  
+
   # Adminer
   # A dead-simple database manager
   adminer:
@@ -40,7 +40,7 @@ services:
       - 8082:8080
     depends_on:
       - db
-  
+
   # Nginx Proxy Manager
   # Nice and simple Nginx UI for managing reverce proxy
   nginx:
@@ -63,3 +63,16 @@ services:
       - ${SELF_HOME_DIR}/nginx-proxy-manager/log:/var/log
     depends_on:
       - db
+
+  # Easy-Gate
+  # Simple web application that acts as the home page for my self-hosted infrastructure. 
+  # Services and notes are parsed from a JSON file in real-time
+  # https://github.com/r7wx/easy-gate
+  easy-gate:
+    container_name: easy-gate
+    image: r7wx/easy-gate:latest
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ${SELF_HOME_DIR}/easy-gate/easy-gate.json:/etc/easy-gate/easy-gate.json

@@ -1,0 +1,38 @@
+{
+    "addr": "0.0.0.0:8080",
+    "use_tls": false,
+    "cert_file": "",
+    "key_file": "",
+    "behind_proxy": false,
+    "title": "Self-hosted dashboard",
+    "icon": "fa-solid fa-cubes",
+    "motd": "Welcome to your self-hosted dashboard",
+    "theme": {
+        "background": "#1d1d1d",
+        "foreground": "#ffffff"
+    },
+    "services": [
+        {
+            "icon": "fa-brands fa-docker",
+            "name": "Portainer",
+            "url": "http://localhost:9000"
+        },
+        {
+            "icon": "fa-solid fa-database",
+            "name": "DB Admin",
+            "url": "http://localhost:8082"
+        },
+        {
+            "icon": "fa-solid fa-circle-nodes",
+            "name": "Nginx Proxy",
+            "url": "http://localhost:8081"
+        }
+    ],
+    "notes": [
+        {
+            "name": "Global note",
+            "text": "This note will be visible to everyone",
+            "groups": []
+        }
+    ]
+}

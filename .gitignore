@@ -1,1 +1,5 @@
 .env
+mariadb/dbdata/
+nginx-proxy-manager/data/
+nginx-proxy-manager/log/
+portainer

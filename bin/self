@@ -73,31 +73,31 @@ function self:command:init() {
 
 function self:command:start() {
   echo "Starting containers..."
-  docker-compose up -d
+  docker compose up -d
 }
 
 function self:command:stop() {
   echo "Stopping containers..."
-  docker-compose stop
+  docker compose stop
 }
 
 function self:command:down() {
   echo "Stopping and removing containers..."
-  docker-compose down --remove-orphans
+  docker compose down --remove-orphans
 }
 
 function self:command:restart() {
   echo "Restarting containers..."
-  docker-compose restart
+  docker compose restart
 }
 
 function self:command:update() {
   echo "Pulling latest images..."
-  docker-compose pull
+  docker compose pull
   echo "Building images..."
-  docker-compose build
+  docker compose build
   echo "Starting containers..."
-  docker-compose up -d
+  docker compose up -d
   echo "Prune to free up space..."
   docker system prune --volumes -f
 }
