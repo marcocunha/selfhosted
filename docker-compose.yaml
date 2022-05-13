@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Portainer CE
+  # Managing containers via nice web UI
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: always
+    ports:
+      - "9000:9000/tcp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${SELF_HOME_DIR}/portainer:/data
+    env_file:
+      - .env
+  
+  # MariaDB
+  # A database Nginx Proxy Manager and Umami
+  db:
+    container_name: db
+    image: mariadb
+    restart: unless-stopped
+    volumes:
+      - ${SELF_HOME_DIR}/mariadb/dbdata:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - ${SELF_HOME_DIR}/db:/docker-entrypoint-initdb.d # FIX entrypoint
+    env_file:
+      - .env
+  
+  # Adminer
+  # A dead-simple database manager
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: unless-stopped
+    environment:
+      ADMINER_PLUGINS: frames
+    ports:
+      - 8082:8080
+    depends_on:
+      - db
+  
+  # Nginx Proxy Manager
+  # Nice and simple Nginx UI for managing reverce proxy
+  nginx:
+    container_name: nginx
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    ports:
+      - 80:80 # HTTP port
+      - 443:443 # HTTPS port
+      - 8081:81 # Admin Paner port
+    environment:
+      DB_MYSQL_HOST: ${MYSQL_HOST}
+      DB_MYSQL_PORT: ${MYSQL_PORT}
+      DB_MYSQL_USER: ${MYSQL_USER}
+      DB_MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DB_MYSQL_NAME: 'nginxproxymanager'
+    volumes:
+      - ${SELF_HOME_DIR}/nginx-proxy-manager/data:/data
+      - ${SELF_HOME_DIR}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - ${SELF_HOME_DIR}/nginx-proxy-manager/log:/var/log
+    depends_on:
+      - db
