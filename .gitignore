@@ -3,3 +3,5 @@ mariadb/dbdata/
 nginx-proxy-manager/data/
 nginx-proxy-manager/log/
 portainer
+grafana/data
+prometheus/data

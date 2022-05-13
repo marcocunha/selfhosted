@@ -18,6 +18,11 @@
             "url": "http://localhost:9000"
         },
         {
+            "icon": "fa-solid fa-chart-line",
+            "name": "Grafana",
+            "url": "http://localhost:3000"
+        },
+        {
             "icon": "fa-solid fa-database",
             "name": "DB Admin",
             "url": "http://localhost:8082"

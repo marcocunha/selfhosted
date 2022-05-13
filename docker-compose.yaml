@@ -76,3 +76,163 @@ services:
       - 8080:8080
     volumes:
       - ${SELF_HOME_DIR}/easy-gate/easy-gate.json:/etc/easy-gate/easy-gate.json
+
+  # Grafana
+  # Grafana allows you to query, visualize, 
+  # alert on and understand your metrics no matter where they are stored.
+  # https://github.com/grafana/grafana
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:6.7.2
+    volumes:
+      - ${SELF_HOME_DIR}/grafana/data:/var/lib/grafana
+      - ${SELF_HOME_DIR}/grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped
+    user: "104"
+    expose:
+      - 3000
+    env_file:
+      - .env
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # Prometheus
+  # Systems and service monitoring system. 
+  # It collects metrics from configured targets at given intervals, 
+  # evaluates rule expressions, displays the results, 
+  # and can trigger alerts when specified conditions are observed.
+  # https://github.com/prometheus/prometheus
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.17.1
+    volumes:
+      - ${SELF_HOME_DIR}/prometheus:/etc/prometheus
+      - ${SELF_HOME_DIR}/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # Alert Manager
+  # It handles alerts sent by client applications such as the Prometheus server. 
+  # It takes care of deduplicating, grouping, and 
+  # routing them to the correct receiver integration such as email, 
+  # PagerDuty, or OpsGenie. 
+  # It also takes care of silencing and inhibition of alerts.
+  # https://prometheus.io/docs/alerting/latest/alertmanager/
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:v0.20.0
+    volumes:
+      - ${SELF_HOME_DIR}/alertmanager:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - 9093
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # Node Exporter
+  # Prometheus exporter for hardware and OS metrics exposed by *NIX kernels, 
+  # written in Go with pluggable metric collectors.
+  # https://github.com/prometheus/node_exporter
+  nodeexporter:
+    image: prom/node-exporter:v0.18.1
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # cAdvisor (Container Advisor)
+  # Provides container users an understanding of the resource usage 
+  # and performance characteristics of their running containers
+  # https://github.com/google/cadvisor
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:v0.34.0
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # Prometheus Pushgateway
+  # The Prometheus Pushgateway exists to allow ephemeral and batch jobs to 
+  # expose their metrics to Prometheus. 
+  # Since these kinds of jobs may not exist long enough to be scraped, 
+  # they can instead push their metrics to a Pushgateway. 
+  # The Pushgateway then exposes these metrics to Prometheus.
+  # https://github.com/prometheus/pushgateway
+  pushgateway:
+    container_name: pushgateway
+    image: prom/pushgateway:v1.2.0
+    restart: unless-stopped
+    expose:
+      - 9091
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # Caddy 2
+  # Is a powerful, enterprise-ready, open source web server 
+  # with automatic HTTPS written in Go.
+  # https://github.com/caddyserver/caddy-docker
+  caddy:
+    image: stefanprodan/caddy
+    container_name: caddy
+    ports:
+      - "3000:3000"
+      - "9090:9090"
+      - "9093:9093"
+      - "9091:9091"
+    volumes:
+      - ${SELF_HOME_DIR}/caddy:/etc/caddy
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    env_file:
+      - .env
+    labels:
+      org.label-schema.group: "monitoring"
+
+networks:
+  monitor-net:
+    driver: bridge
