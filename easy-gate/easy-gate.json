@@ -26,6 +26,11 @@
             "icon": "fa-solid fa-circle-nodes",
             "name": "Nginx Proxy",
             "url": "http://localhost:8081"
+        },
+        {
+            "icon": "fa-solid fa-note-sticky",
+            "name": "Notion",
+            "url": "https://www.notion.so/Selfhosting-5cafa3813b67410f893d7166fe52b828"
         }
     ],
     "notes": [
