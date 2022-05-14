@@ -64,19 +64,20 @@ services:
     depends_on:
       - db
 
-  # Easy-Gate
-  # Simple web application that acts as the home page for my self-hosted infrastructure. 
-  # Services and notes are parsed from a JSON file in real-time
-  # https://github.com/r7wx/easy-gate
-  easy-gate:
-    container_name: easy-gate
-    image: r7wx/easy-gate:latest
+  #--------------------------------------------------------------------------------------------#
+  #                               Homarr -  A homepage for your server.                        #
+  #   Simple and lightweight homepage for your server.
+  #   That helps you easily access all of your services in one place.
+  #   https://github.com/ajnart/homarr
+  #--------------------------------------------------------------------------------------------#
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
     restart: unless-stopped
-    ports:
-      - 8080:8080
     volumes:
-      - ${SELF_HOME_DIR}/easy-gate/easy-gate.json:/etc/easy-gate/easy-gate.json
-
+      - ${SELF_HOME_DIR}/homarr:/app/data/configs
+    ports:
+      - '7575:7575'
   # Grafana
   # Grafana allows you to query, visualize, 
   # alert on and understand your metrics no matter where they are stored.

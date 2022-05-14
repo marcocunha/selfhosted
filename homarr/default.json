@@ -1,0 +1,61 @@
+{
+  "name": "default",
+  "services": [
+    {
+      "type": "Other",
+      "name": "Portainer",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/portainer.png",
+      "url": "http://localhost:9000/"
+    },
+    {
+      "type": "Other",
+      "name": "Grafana",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/grafana.png",
+      "url": "http://localhost:3000/"
+    },
+    {
+      "type": "Other",
+      "name": "DB Admin",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/adminer.png",
+      "url": "http://localhost:8082/"
+    },
+    {
+      "type": "Other",
+      "name": "Nginx",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/nginx.png",
+      "url": "http://localhost:8081/"
+    },
+    {
+      "type": "Other",
+      "name": "Notion",
+      "icon": "https://cdn.iconscout.com/icon/free/png-256/notion-2296040-1911999.png",
+      "url": "https://www.notion.so/Selfhosting-5cafa3813b67410f893d7166fe52b828/"
+    },
+    {
+      "type": "Other",
+      "name": "Prometheus",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/prometheus.png",
+      "url": "http://localhost:9090/"
+    },
+    {
+      "type": "Other",
+      "name": "Alert Manager",
+      "icon": "https://www.freeiconspng.com/uploads/alert-icon-red-11.png",
+      "url": "http://localhost:9093/"
+    },
+    {
+      "type": "Other",
+      "name": "PushGateway",
+      "icon": "https://bullsimedia.com/wp-content/uploads/2021/08/service6.png",
+      "url": "http://localhost:9091/"
+    }
+  ],
+  "settings": {
+    "enabledModules": [
+      "Date",
+      "Calendar"
+    ],
+    "searchBar": true,
+    "searchUrl": "https://google.com/search?q="
+  }
+}
