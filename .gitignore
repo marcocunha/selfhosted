@@ -5,3 +5,4 @@ nginx-proxy-manager/log/
 portainer
 grafana/data
 prometheus/data
+.n8n/config

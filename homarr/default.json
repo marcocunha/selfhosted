@@ -48,6 +48,12 @@
       "name": "PushGateway",
       "icon": "https://bullsimedia.com/wp-content/uploads/2021/08/service6.png",
       "url": "http://localhost:9091/"
+    },
+    {
+      "type": "Other",
+      "name": "n8n",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/n8n.png",
+      "url": "http://localhost:5678/"
     }
   ],
   "settings": {
