@@ -20,3 +20,4 @@ postgres/pg_subtrans/
 postgres/postmaster.pid
 postgres/pg_wal/
 postgres/pg_notify/
+postgres/pg_stat/
