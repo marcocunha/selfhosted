@@ -54,6 +54,12 @@
       "name": "n8n",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/n8n.png",
       "url": "http://localhost:5678/"
+    },
+    {
+      "type": "Other",
+      "name": "Ghostfolio",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/ghostfolio.png",
+      "url": "http://localhost:3333/"
     }
   ],
   "settings": {

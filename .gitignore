@@ -6,3 +6,17 @@ portainer
 grafana/data
 prometheus/data
 .n8n/config
+postgres/pg_hba.conf
+postgres/pg_ident.conf
+postgres/postgresql.auto.conf
+postgres/postmaster.opts
+postgres/base/
+postgres/global/
+postgres/pg_logical/
+postgres/pg_multixact/
+postgres/pg_stat_tmp/
+postgres/pg_xact/
+postgres/pg_subtrans/
+postgres/postmaster.pid
+postgres/pg_wal/
+postgres/pg_notify/
