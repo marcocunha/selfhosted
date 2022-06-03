@@ -1,2 +1,2 @@
 # selfhosted
-Applications and tools that deployed in my own server
+Applications and tools deployed in my own server
