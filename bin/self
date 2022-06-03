@@ -17,24 +17,24 @@ COMMAND_ARGS=("${@}")
 #
 
 function self:utils:validate() {
-  if [ "$(type -t self:command:"$COMMAND")" = function ]; then
-    return 0
-  elif [ -z "$COMMAND" ]; then
-    self:command:help
-    return 1
-  else
-    echo "Unknown command: $COMMAND";
-    return 1
-  fi
+    if [ "$(type -t self:command:"$COMMAND")" = function ]; then
+        return 0
+        elif [ -z "$COMMAND" ]; then
+        self:command:help
+        return 1
+    else
+        echo "Unknown command: $COMMAND";
+        return 1
+    fi
 }
 
 function self:exists() {
-  command -v "$1" > /dev/null 2>&1
+    command -v "$1" > /dev/null 2>&1
 }
 
 function self::load_vars() {
-  # shellcheck disable=SC2046
-  export $(grep -v '^#' "$1" | xargs);
+    # shellcheck disable=SC2046
+    export $(grep -v '^#' "$1" | xargs);
 }
 
 #
@@ -42,7 +42,7 @@ function self::load_vars() {
 #
 
 function self:command:help() {
-  echo "
+    echo "
   📟 Self-hosted helper
 
   self help                       print this help message
@@ -56,72 +56,72 @@ function self:command:help() {
   self password                   generate a password
   self docs                       start dev server for docs
   self ports                      show all ports in use
-"
+    "
 }
 
 function self:command:init() {
-  # Update packages
-  brew update
-  brew upgrade
-  
-  echo "Installing python dependencies..."
-  pip3 install -r "$SELF_HOME_DIR/requirements.txt"
-  
-  echo "Done!"
-  echo "Please, reboot!"
+    # Update packages
+    brew update
+    brew upgrade
+    
+    echo "Installing python dependencies..."
+    pip3 install -r "$SELF_HOME_DIR/requirements.txt"
+    
+    echo "Done!"
+    echo "Please, reboot!"
 }
 
 function self:command:start() {
-  echo "Starting containers..."
-  docker compose up -d
+    echo "Starting containers..."
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.yaml up -d
 }
 
 function self:command:stop() {
-  echo "Stopping containers..."
-  docker compose stop
+    echo "Stopping containers..."
+    docker compose stop
 }
 
 function self:command:down() {
-  echo "Stopping and removing containers..."
-  docker compose down --remove-orphans
+    echo "Stopping and removing containers..."
+    docker compose down --remove-orphans
 }
 
 function self:command:restart() {
-  echo "Restarting containers..."
-  docker compose restart
+    echo "Restarting containers..."
+    docker compose restart
 }
 
 function self:command:update() {
-  echo "Pulling latest images..."
-  docker compose pull
-  echo "Building images..."
-  docker compose build
-  echo "Starting containers..."
-  docker compose up -d
-  echo "Prune to free up space..."
-  docker system prune --volumes -f
+    echo "Pulling latest images..."
+    docker compose pull
+    echo "Building images..."
+    docker compose build
+    echo "Starting containers..."
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.yaml up -d
+    echo "Prune to free up space..."
+    docker system prune --volumes -f
 }
 
 function self:command:prune() {
-  echo "Deletting all images not associated with a container..."
-  docker system prune --volumes
+    echo "Deletting all images not associated with a container..."
+    docker system prune --volumes
 }
 
 function self:command:password() {
-  local password length
-  length=${1:-16}
-  password="$(openssl rand -base64 $length | rev | cut -b 2- | rev)";
-
-  echo "$password"
+    local password length
+    length=${1:-16}
+    password="$(openssl rand -base64 $length | rev | cut -b 2- | rev)";
+    
+    echo "$password"
 }
 
 function self:command:docs() {
-  cd "$SELF_HOME_DIR/docs";
-  bundle exec jekyll serve 
+    cd "$SELF_HOME_DIR/docs";
+    bundle exec jekyll serve
 }
 
 function self:command:ports() {
-  sudo lsof -i -P -n | grep LISTEN
+    sudo lsof -i -P -n | grep LISTEN
 }
 
 #
@@ -129,22 +129,22 @@ function self:command:ports() {
 #
 
 function main() {
-  if [ -z "$SELF_HOME_DIR" ]; then
-    echo "\$SELF_HOME_DIR is unset";
-    return 1;
-  fi;
-
-  cd "$SELF_HOME_DIR" || exit 1
-
-  if ! self:utils:validate; then
-    return 1
-  fi
-
-  self::load_vars "$SELF_HOME_DIR/.env"
-
-  self:command:"$COMMAND" "${COMMAND_ARGS[*]}"
-
-  return $?
+    if [ -z "$SELF_HOME_DIR" ]; then
+        echo "\$SELF_HOME_DIR is unset";
+        return 1;
+    fi;
+    
+    cd "$SELF_HOME_DIR" || exit 1
+    
+    if ! self:utils:validate; then
+        return 1
+    fi
+    
+    self::load_vars "$SELF_HOME_DIR/.env"
+    
+    self:command:"$COMMAND" "${COMMAND_ARGS[*]}"
+    
+    return $?
 }
 
 main
