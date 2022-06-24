@@ -59,3 +59,19 @@ services:
       - redis
     ports:
       - 3333:3333
+
+  # Mosquitto
+  # Message broker that implements the MQTT protocol 
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "1884:1884"
+    volumes:
+      - "${SELF_HOME_DIR}/mosquitto/config:/mosquitto/config"
+      - "${SELF_HOME_DIR}/mosquitto/data:/mosquitto/data"
+      - "${SELF_HOME_DIR}/mosquitto/log:/mosquitto/log"
+    env_file:
+      - .env
