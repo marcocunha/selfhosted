@@ -1,0 +1,31 @@
+#-------------------------------------------------------------
+# Docker compose related with smart home services
+#-------------------------------------------------------------
+version: '3.8'
+
+services:
+  # Frigate
+  # A complete and local NVR designed for Home Assistant with AI object detection. Uses OpenCV and Tensorflow to perform realtime object detection locally for IP cameras.
+  # https://frigate.video/
+  frigate:
+    container_name: frigate
+    privileged: true # this may not be necessary for all setups
+    restart: unless-stopped
+    image: blakeblackshear/frigate:stable-amd64
+    shm_size: "64mb" # update for your cameras based on calculation above
+    devices:
+      - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
+      - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${SELF_HOME_DIR}/frigate/config/config.yml:/config/config.yml:ro
+      - "/Volumes/macOS Data/frigate/media:/media/frigate"
+      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5000:5000"
+      - "1935:1935" # RTMP feeds
+    env_file:
+      - .env

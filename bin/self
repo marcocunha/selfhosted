@@ -73,7 +73,7 @@ function self:command:init() {
 
 function self:command:start() {
     echo "Starting containers..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.yaml up -d
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
 }
 
 function self:command:stop() {
@@ -97,7 +97,7 @@ function self:command:update() {
     echo "Building images..."
     docker compose build
     echo "Starting containers..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.yaml up -d
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
     echo "Prune to free up space..."
     docker system prune --volumes -f
 }
