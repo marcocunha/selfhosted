@@ -28,6 +28,8 @@ services:
     image: n8nio/n8n
     container_name: n8n
     restart: always
+    profiles:
+      - donotstart #do not start service
     ports:
       - 5678:5678
     depends_on:
