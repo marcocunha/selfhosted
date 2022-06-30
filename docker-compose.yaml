@@ -75,3 +75,65 @@ services:
       - "${SELF_HOME_DIR}/mosquitto/log:/mosquitto/log"
     env_file:
       - .env
+
+  # changedetection.io
+  # Self-Hosted, Open Source, Change Monitoring of Web Pages
+  # https://github.com/dgtlmoon/changedetection.io
+  changedetection:
+      container_name: changedetection
+      hostname: changedetection
+      image: ghcr.io/dgtlmoon/changedetection.io:latest
+      restart: unless-stopped
+      # Comment out ports: when using behind a reverse proxy , enable networks: etc.
+      ports:
+        - 1885:5000
+      volumes:
+        - ${SELF_HOME_DIR}/changedetection/data:/datastore
+
+      environment:
+        - WEBDRIVER_URL=http://browser-chrome:4444/wd/hub
+        - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/
+
+  # Selenium - Chrome
+  # Docker images for the Selenium Grid Server
+  # https://github.com/SeleniumHQ/docker-selenium
+  browser-chrome:
+      container_name: browser-chrome
+      hostname: browser-chrome
+      image: selenium/standalone-chrome-debug:3.141.59
+      environment:
+          - VNC_NO_PASSWORD=1
+          - SCREEN_WIDTH=1920
+          - SCREEN_HEIGHT=1024
+          - SCREEN_DEPTH=16
+      volumes:
+          # Workaround to avoid the browser crashing inside a docker container
+          # See https://github.com/SeleniumHQ/docker-selenium#quick-start
+          - /dev/shm:/dev/shm
+      restart: unless-stopped
+      ports:
+        - 4444:4444
+
+   
+  # Browserless
+  # Chrome as a service container. Bring your own hardware or cloud. 
+  # https://github.com/browserless/chrome
+  # Used for fetching pages via Playwright+Chrome where you need Javascript support.
+  playwright-chrome:
+      container_name: "browserless-chrome"
+      hostname: playwright-chrome
+      image: browserless/chrome
+      restart: always
+      ports:
+      - "1886:3000"
+      environment:
+          - SCREEN_WIDTH=1920
+          - SCREEN_HEIGHT=1024
+          - SCREEN_DEPTH=16
+          - ENABLE_DEBUGGER=false
+          - PREBOOT_CHROME=true
+          - CONNECTION_TIMEOUT=300000
+          - MAX_CONCURRENT_SESSIONS=10
+          - CHROME_REFRESH_TIME=600000
+          - DEFAULT_BLOCK_ADS=true
+          - DEFAULT_STEALTH=true

@@ -83,6 +83,22 @@
       "name": "Frigate",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/frigate.png",
       "url": "http://192.168.178.143:5000/"
+    },
+    {
+      "id": "1e4f8749-963a-4b00-9748-03f09faaec13",
+      "type": "Other",
+      "category": "Bots",
+      "name": "Browserless",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/browserless.png",
+      "url": "http://192.168.178.143:1886/"
+    },
+    {
+      "id": "ee7dfb13-125c-4817-9a13-c96497ed357f",
+      "type": "Other",
+      "category": "Bots",
+      "name": "Changedetection",
+      "icon": "/favicon.svg",
+      "url": "http://192.168.178.143:1885/"
     }
   ],
   "settings": {
