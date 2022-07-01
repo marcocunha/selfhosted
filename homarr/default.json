@@ -99,6 +99,13 @@
       "name": "Changedetection",
       "icon": "/favicon.svg",
       "url": "http://192.168.178.143:1885/"
+    },
+    {
+      "id": "70bec250-2a29-4b35-ad1a-7d161007e81e",
+      "type": "Other",
+      "name": "Duplicati",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/duplicati.png",
+      "url": "http://192.168.178.143:8200"
     }
   ],
   "settings": {

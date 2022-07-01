@@ -31,7 +31,7 @@ groups:
       description: "Docker host memory usage is {{ humanize $value}}%. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}."
 
   - alert: high_storage_load
-    expr: (node_filesystem_size_bytes{fstype="aufs"} - node_filesystem_free_bytes{fstype="aufs"}) / node_filesystem_size_bytes{fstype="aufs"}  * 100 > 85
+    expr: (node_filesystem_size_bytes{fstype="ext4"} - node_filesystem_free_bytes{fstype="ext4"}) / node_filesystem_size_bytes{fstype="ext4"}  * 100 > 85
     for: 30s
     labels:
       severity: warning
@@ -67,4 +67,13 @@ groups:
     annotations:
       summary: "Changedetection high memory usage"
       description: "Changedetection memory consumption is at {{ humanize $value}}."
+  
+  - alert: duplicati_down
+    expr: absent(container_memory_usage_bytes{name="duplicati"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Duplicati is down"
+      description: "Duplicati container is down for more than 30 seconds."
 

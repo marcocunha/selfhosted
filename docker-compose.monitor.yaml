@@ -18,6 +18,20 @@ services:
     env_file:
       - .env
       
+  # Duplicati
+  # Free backup software to store encrypted backups online
+  # https://github.com/duplicati/duplicati
+  duplicati:
+    container_name: duplicati
+    image: lscr.io/linuxserver/duplicati
+    env_file:
+      - .env
+    volumes:
+      - ${SELF_HOME_DIR}/duplicati/config/:/config
+      - ${SELF_HOME_DIR}:/source
+    ports:
+      - 8200:8200
+    restart: unless-stopped
   # Grafana
   # Grafana allows you to query, visualize, 
   # alert on and understand your metrics no matter where they are stored.

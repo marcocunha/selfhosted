@@ -24,3 +24,4 @@ postgres/pg_stat/
 mosquitto/data/
 mosquitto/log/
 changedetection/data/
+duplicati/config/
