@@ -17,7 +17,7 @@ services:
       - ${SELF_HOME_DIR}/portainer:/data
     env_file:
       - .env
-      
+
   # Duplicati
   # Free backup software to store encrypted backups online
   # https://github.com/duplicati/duplicati
@@ -32,6 +32,7 @@ services:
     ports:
       - 8200:8200
     restart: unless-stopped
+      
   # Grafana
   # Grafana allows you to query, visualize, 
   # alert on and understand your metrics no matter where they are stored.
@@ -108,17 +109,18 @@ services:
   # written in Go with pluggable metric collectors.
   # https://github.com/prometheus/node_exporter
   nodeexporter:
-    image: prom/node-exporter:v0.18.1
+    image: prom/node-exporter:latest
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - /:/host:ro
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc' 
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
     expose:
       - 9100
@@ -132,7 +134,7 @@ services:
   # and performance characteristics of their running containers
   # https://github.com/google/cadvisor
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.39.3
+    image: gcr.io/cadvisor/cadvisor
     container_name: cadvisor
     privileged: true
     volumes:
@@ -160,7 +162,7 @@ services:
   # https://github.com/prometheus/pushgateway
   pushgateway:
     container_name: pushgateway
-    image: prom/pushgateway:v1.2.0
+    image: prom/pushgateway
     restart: unless-stopped
     expose:
       - 9091
