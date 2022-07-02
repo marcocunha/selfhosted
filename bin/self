@@ -56,6 +56,7 @@ function self:command:help() {
   self password                   generate a password
   self docs                       start dev server for docs
   self ports                      show all ports in use
+  self restartdocker              restart docker client
     "
 }
 
@@ -122,6 +123,10 @@ function self:command:docs() {
 
 function self:command:ports() {
     sudo lsof -i -P -n | grep LISTEN
+}
+
+function self:command:restartdocker() {
+    killall Docker && open /Applications/Docker.app
 }
 
 #
