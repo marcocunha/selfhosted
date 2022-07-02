@@ -25,3 +25,4 @@ mosquitto/data/
 mosquitto/log/
 changedetection/data/
 duplicati/config/
+wireguard/

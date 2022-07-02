@@ -106,6 +106,14 @@
       "name": "Duplicati",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/duplicati.png",
       "url": "http://192.168.178.143:8200"
+    },
+    {
+      "id": "cb49d2c7-0634-4511-a776-10bd09e4e246",
+      "type": "Other",
+      "category": "Security",
+      "name": "Wireguard",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/wireguard.png",
+      "url": "http://192.168.178.143:51821"
     }
   ],
   "settings": {
