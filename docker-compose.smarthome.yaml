@@ -29,3 +29,21 @@ services:
       - "1935:1935" # RTMP feeds
     env_file:
       - .env
+
+  # Mosquitto
+  # Message broker that implements the MQTT protocol 
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    profiles:
+      - donotstart #do not start service
+    ports:
+      - "1883:1883"
+      - "1884:1884"
+    volumes:
+      - "${SELF_HOME_DIR}/mosquitto/config:/mosquitto/config"
+      - "${SELF_HOME_DIR}/mosquitto/data:/mosquitto/data"
+      - "${SELF_HOME_DIR}/mosquitto/log:/mosquitto/log"
+    env_file:
+      - .env
