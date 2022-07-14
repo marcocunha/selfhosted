@@ -94,9 +94,9 @@ function self:command:restart() {
 
 function self:command:update() {
     echo "Pulling latest images..."
-    docker compose pull
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml pull
     echo "Building images..."
-    docker compose build
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml build
     echo "Starting containers..."
     docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
     echo "Prune to free up space..."
