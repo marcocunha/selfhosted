@@ -126,7 +126,10 @@ function self:command:ports() {
 }
 
 function self:command:restartdocker() {
-    killall Docker && open /Applications/Docker.app
+    echo "Killing docker..."
+    killall Docker
+    echo "Starting docker..."
+    open /Applications/Docker.app
 }
 
 #
