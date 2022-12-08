@@ -26,3 +26,4 @@ mosquitto/log/
 changedetection/data/
 duplicati/config/
 wireguard/
+pgadmin/
