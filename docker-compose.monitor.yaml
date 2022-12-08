@@ -39,7 +39,7 @@ services:
   # https://github.com/grafana/grafana
   grafana:
     container_name: grafana
-    image: grafana/grafana:6.7.2
+    image: grafana/grafana
     volumes:
       - ${SELF_HOME_DIR}/grafana/data:/var/lib/grafana
       - ${SELF_HOME_DIR}/grafana/provisioning:/etc/grafana/provisioning
