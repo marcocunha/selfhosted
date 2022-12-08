@@ -16,6 +16,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${SELF_HOME_DIR}/homarr:/app/data/configs
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - '7575:7575'
 
