@@ -135,7 +135,9 @@
       "Calendar"
     ],
     "searchBar": true,
-    "searchUrl": "https://google.com/search?q="
+    "searchUrl": "https://google.com/search?q=",
+    "appCardWidth": 0.6000000000000001,
+    "widgetPosition": "right"
   },
   "modules": {
     "Ping Services": {
