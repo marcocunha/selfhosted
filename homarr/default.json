@@ -7,7 +7,7 @@
       "category": "Monitor",
       "name": "Portainer",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/portainer.png",
-      "url": "http://192.168.178.143:9000/"
+      "url": "http://192.168.1.146:9000/"
     },
     {
       "id": "cc7410a0-47a7-429b-9f0d-51e83a36eeda",
@@ -15,21 +15,23 @@
       "category": "Monitor",
       "name": "Grafana",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/grafana.png",
-      "url": "http://192.168.178.143:3000/"
+      "url": "http://192.168.1.146:3000/"
     },
     {
+      "id": "46f259d7-d43d-4617-a9a2-01182cf221b2",
       "type": "Other",
+      "category": "Database",
       "name": "DB Admin",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/adminer.png",
-      "url": "http://192.168.178.143:8082/",
-      "id": "46f259d7-d43d-4617-a9a2-01182cf221b2"
+      "url": "http://192.168.1.146:8082/"
     },
     {
+      "id": "647435fe-c75b-44d5-b9f9-0fcd74020711",
       "type": "Other",
+      "category": "Security",
       "name": "Nginx",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/nginx.png",
-      "url": "http://192.168.178.143:8081/",
-      "id": "647435fe-c75b-44d5-b9f9-0fcd74020711"
+      "url": "http://192.168.1.146:8081/"
     },
     {
       "id": "627b830b-87d4-4d02-be13-421b6a181f86",
@@ -44,7 +46,7 @@
       "category": "Monitor",
       "name": "Prometheus",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/prometheus.png",
-      "url": "http://192.168.178.143:9090/"
+      "url": "http://192.168.1.146:9090/"
     },
     {
       "id": "2374f1d6-3a34-4181-914f-1a3736a85f76",
@@ -52,7 +54,7 @@
       "category": "Monitor",
       "name": "Alert Manager",
       "icon": "https://www.freeiconspng.com/uploads/alert-icon-red-11.png",
-      "url": "http://192.168.178.143:9093/"
+      "url": "http://192.168.1.146:9093/"
     },
     {
       "id": "3a850c28-e8ff-41b2-a049-ec2ccd77b0ab",
@@ -60,21 +62,23 @@
       "category": "Monitor",
       "name": "PushGateway",
       "icon": "https://bullsimedia.com/wp-content/uploads/2021/08/service6.png",
-      "url": "http://192.168.178.143:9091/"
+      "url": "http://192.168.1.146:9091/"
     },
     {
+      "id": "82b0c694-1979-4d3b-88fb-f1d0594209a3",
       "type": "Other",
+      "category": "Bots & Automation",
       "name": "n8n",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/n8n.png",
-      "url": "http://192.168.178.143:5678/",
-      "id": "82b0c694-1979-4d3b-88fb-f1d0594209a3"
+      "url": "http://192.168.1.146:5678/"
     },
     {
+      "id": "2f4a28b7-485a-4f93-98f9-2e5ff18cee28",
       "type": "Other",
+      "category": "Local Apps",
       "name": "Ghostfolio",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/ghostfolio.png",
-      "url": "http://192.168.178.143:3333/",
-      "id": "2f4a28b7-485a-4f93-98f9-2e5ff18cee28"
+      "url": "http://192.168.1.146:3333/"
     },
     {
       "id": "84bb8bfe-5138-49dd-acad-49905c41308d",
@@ -82,30 +86,31 @@
       "category": "Smarthome",
       "name": "Frigate",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/frigate.png",
-      "url": "http://192.168.178.143:5000/"
+      "url": "http://192.168.1.146:5000/"
     },
     {
       "id": "1e4f8749-963a-4b00-9748-03f09faaec13",
       "type": "Other",
-      "category": "Bots",
+      "category": "Bots & Automation",
       "name": "Browserless",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/browserless.png",
-      "url": "http://192.168.178.143:1886/"
+      "url": "http://192.168.1.146:1886/"
     },
     {
       "id": "ee7dfb13-125c-4817-9a13-c96497ed357f",
       "type": "Other",
-      "category": "Bots",
+      "category": "Bots & Automation",
       "name": "Changedetection",
-      "icon": "/favicon.svg",
-      "url": "http://192.168.178.143:1885/"
+      "icon": "https://github.com/dgtlmoon/changedetection.io/blob/master/changedetectionio/static/favicons/android-chrome-256x256.png?raw=true",
+      "url": "http://192.168.1.146:1885/"
     },
     {
       "id": "70bec250-2a29-4b35-ad1a-7d161007e81e",
       "type": "Other",
+      "category": "Security",
       "name": "Duplicati",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/duplicati.png",
-      "url": "http://192.168.178.143:8200"
+      "url": "http://192.168.1.146:8200"
     },
     {
       "id": "cb49d2c7-0634-4511-a776-10bd09e4e246",
@@ -113,7 +118,15 @@
       "category": "Security",
       "name": "Wireguard",
       "icon": "https://cdn.jsdelivr.net/gh/walkxhub/dashboard-icons/png/wireguard.png",
-      "url": "http://192.168.178.143:51821"
+      "url": "http://192.168.1.146:51821"
+    },
+    {
+      "id": "c3e25b61-19a5-43e0-8e36-c7ebc830984b",
+      "type": "Other",
+      "category": "Database",
+      "name": "pgAdmin",
+      "icon": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/pgadmin.png",
+      "url": "http://192.168.1.146:5050/"
     }
   ],
   "settings": {
@@ -145,6 +158,32 @@
     },
     "System info": {
       "enabled": true
+    },
+    "calendar": {
+      "enabled": false
+    },
+    "docker": {
+      "enabled": true
+    },
+    "dashdot": {
+      "enabled": false
+    },
+    "date": {
+      "enabled": true
+    },
+    "dlspeed": {
+      "enabled": false
+    },
+    "ping": {
+      "enabled": false
+    },
+    "weather": {
+      "enabled": true,
+      "options": {
+        "location": {
+          "value": "Lisbon"
+        }
+      }
     }
   }
 }
