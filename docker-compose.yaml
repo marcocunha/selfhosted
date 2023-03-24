@@ -130,3 +130,19 @@ services:
           - CHROME_REFRESH_TIME=600000
           - DEFAULT_BLOCK_ADS=true
           - DEFAULT_STEALTH=true
+
+  # sponsorblockcast
+  # a POSIX shell script that skips sponsored YouTube content and skippable ads on all local Chromecasts, using the SponsorBlock API.
+  # https://github.com/nichobi/sponsorblockcast
+  sponsorblockcast:
+    container_name: "sponsorblockcast"
+    image: ghcr.io/nichobi/sponsorblockcast:latest
+    network_mode: host
+    environment:
+      SBCPOLLINTERVAL: 1
+      SBCSCANINTERVAL: 300
+      SBCCATEGORIES: sponsor
+      SBCDIR: /tmp/sponsorblockcast
+    cap_add: 
+      - NET_ADMIN
+    restart: always
