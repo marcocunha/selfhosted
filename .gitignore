@@ -27,3 +27,7 @@ changedetection/data/
 duplicati/config/
 wireguard/
 pgadmin/
+.n8n/crash.journal
+.n8n/*.log
+.DS_Store
+frigate/config/config.yml
