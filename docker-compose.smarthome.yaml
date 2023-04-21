@@ -16,7 +16,7 @@ services:
     # profiles:
       # - donotstart #do not start service
     devices:
-      - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
+      # - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
       - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
     volumes:
       - /etc/localtime:/etc/localtime:ro

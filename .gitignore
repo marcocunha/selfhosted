@@ -31,5 +31,6 @@ pgadmin/
 .n8n/*.log
 .DS_Store
 frigate/config/config.yml
+frigate/config/*.bkp
 mealie/.secret
 mealie/*.log
