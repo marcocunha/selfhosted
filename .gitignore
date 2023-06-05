@@ -34,3 +34,10 @@ frigate/config/config.yml
 frigate/config/*.bkp
 mealie/.secret
 mealie/*.log
+adguardhome/conf/AdGuardHome.yaml
+adguardhome/work/data/
+crater/
+jeedom/
+mealie/
+nginx-proxy-manager/letsencrypt/
+uptimekuma/

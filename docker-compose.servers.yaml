@@ -10,8 +10,8 @@ services:
     container_name: nginx
     image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
-    profiles:
-      - donotstart #do not start service
+    # profiles:
+    # - donotstart #do not start service
     ports:
       - 80:80 # HTTP port
       - 443:443 # HTTPS port
@@ -36,6 +36,8 @@ services:
     container_name: wg-easy
     image: weejewel/wg-easy
     restart: unless-stopped
+    # profiles:
+    #   - donotstart #do not start service
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
@@ -64,3 +66,35 @@ services:
       - "traefik.udp.routers.wireguard-udp.entrypoints=wireguard"
       - "traefik.udp.routers.wireguard-udp.service=wireguard-udp-svc"
       - "traefik.udp.services.wireguard-udp-svc.loadbalancer.server.port=51820"
+
+  # AdGuard Home
+  # Free and open source, powerful network-wide ads & trackers blocking DNS server.
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp" #plain DNS
+      - "53:53/udp" #plain DNS
+      - "67:67/udp" #AdGuard Home as a DHCP server
+      - "69:68/udp" #AdGuard Home as a DHCP server
+      - "69:68/tcp" #AdGuard Home as a DHCP server
+      - "3080:80/tcp" #AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server.
+      - "3443:443/tcp" #AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server.
+      - "3443:443/udp" #AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server.
+      - "3001:3000/tcp" #AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server.
+      - "853:853/tcp" #AdGuard Home as a DNS-over-TLS server.
+      - "8853:8853/udp" #AdGuard Home as a DNS-over-QUIC server
+      - "5443:5443/tcp" #AdGuard Home as a DNSCrypt server
+      - "5443:5443/udp" #AdGuard Home as a DNSCrypt server
+    volumes:
+      - "${SELF_HOME_DIR}/adguardhome/work:/opt/adguardhome/work"
+      - "${SELF_HOME_DIR}/adguardhome/conf:/opt/adguardhome/conf"
+    env_file:
+      - .env
+    networks:
+      - agh_net
+
+networks:
+  agh_net:
+    driver: bridge
