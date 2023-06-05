@@ -193,6 +193,24 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
+  # Uptime Kuma
+  # Uptime Kuma is an easy-to-use self-hosted monitoring tool.
+  # https://github.com/louislam/uptime-kuma
+  uptime-kuma:
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    image: louislam/uptime-kuma
+    restart: always
+    ports:
+      - 3005:3001
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      - ${SELF_HOME_DIR}/uptimekuma:/app/data
+    env_file:
+      - .env
+
 networks:
   monitor-net:
     driver: bridge
