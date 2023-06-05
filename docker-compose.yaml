@@ -3,7 +3,7 @@
 #-------------------------------------------------------------
 version: '3.8'
 
-services:  
+services:
   #--------------------------------------------------------------------------------------------#
   #                               Homarr -  A homepage for your server.                        #
   #   Simple and lightweight homepage for your server.
@@ -65,71 +65,70 @@ services:
       - redis
     ports:
       - 3333:3333
-      
+
   # changedetection.io
   # Self-Hosted, Open Source, Change Monitoring of Web Pages
   # https://github.com/dgtlmoon/changedetection.io
   changedetection:
-      container_name: changedetection
-      hostname: changedetection
-      image: ghcr.io/dgtlmoon/changedetection.io:latest
-      restart: unless-stopped
-      # Comment out ports: when using behind a reverse proxy , enable networks: etc.
-      ports:
-        - 1885:5000
-      volumes:
-        - ${SELF_HOME_DIR}/changedetection/data:/datastore
+    container_name: changedetection
+    hostname: changedetection
+    image: ghcr.io/dgtlmoon/changedetection.io:latest
+    restart: unless-stopped
+    # Comment out ports: when using behind a reverse proxy , enable networks: etc.
+    ports:
+      - 1885:5000
+    volumes:
+      - ${SELF_HOME_DIR}/changedetection/data:/datastore
 
-      environment:
-        - WEBDRIVER_URL=http://browser-chrome:4444/wd/hub
-        - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/
-        # Plain requsts - proxy support example.
-        # - HTTP_PROXY=http://157.245.33.179:80,http://77.73.241.154:80
-        # - HTTPS_PROXY=https://2.39.10.238:8118
+    environment:
+      - WEBDRIVER_URL=http://browser-chrome:4444/wd/hub
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/
+      # Plain requsts - proxy support example.
+      # - HTTP_PROXY=http://157.245.33.179:80,http://77.73.241.154:80
+      # - HTTPS_PROXY=https://2.39.10.238:8118
 
-  # Selenium - Chrome
-  # Docker images for the Selenium Grid Server
-  # https://github.com/SeleniumHQ/docker-selenium
+      # Selenium - Chrome
+      # Docker images for the Selenium Grid Server
+      # https://github.com/SeleniumHQ/docker-selenium
   browser-chrome:
-      container_name: browser-chrome
-      hostname: browser-chrome
-      image: selenium/standalone-chrome-debug:3.141.59
-      environment:
-          - VNC_NO_PASSWORD=1
-          - SCREEN_WIDTH=1920
-          - SCREEN_HEIGHT=1024
-          - SCREEN_DEPTH=16
-      volumes:
-          # Workaround to avoid the browser crashing inside a docker container
-          # See https://github.com/SeleniumHQ/docker-selenium#quick-start
-          - /dev/shm:/dev/shm
-      restart: unless-stopped
-      ports:
-        - 4444:4444
+    container_name: browser-chrome
+    hostname: browser-chrome
+    image: selenium/standalone-chrome-debug:3.141.59
+    environment:
+      - VNC_NO_PASSWORD=1
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+    volumes:
+      # Workaround to avoid the browser crashing inside a docker container
+      # See https://github.com/SeleniumHQ/docker-selenium#quick-start
+      - /dev/shm:/dev/shm
+    restart: unless-stopped
+    ports:
+      - 4444:4444
 
-   
   # Browserless
   # Chrome as a service container. Bring your own hardware or cloud. 
   # https://github.com/browserless/chrome
   # Used for fetching pages via Playwright+Chrome where you need Javascript support.
   playwright-chrome:
-      container_name: "browserless-chrome"
-      hostname: playwright-chrome
-      image: browserless/chrome
-      restart: unless-stopped
-      ports:
+    container_name: "browserless-chrome"
+    hostname: playwright-chrome
+    image: browserless/chrome
+    restart: unless-stopped
+    ports:
       - "1886:3000"
-      environment:
-          - SCREEN_WIDTH=1920
-          - SCREEN_HEIGHT=1024
-          - SCREEN_DEPTH=16
-          - ENABLE_DEBUGGER=false
-          - PREBOOT_CHROME=true
-          - CONNECTION_TIMEOUT=300000
-          - MAX_CONCURRENT_SESSIONS=10
-          - CHROME_REFRESH_TIME=600000
-          - DEFAULT_BLOCK_ADS=true
-          - DEFAULT_STEALTH=true
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+      - ENABLE_DEBUGGER=false
+      - PREBOOT_CHROME=true
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
 
   # sponsorblockcast
   # a POSIX shell script that skips sponsored YouTube content and skippable ads on all local Chromecasts, using the SponsorBlock API.
@@ -143,6 +142,64 @@ services:
       SBCSCANINTERVAL: 300
       SBCCATEGORIES: sponsor
       SBCDIR: /tmp/sponsorblockcast
-    cap_add: 
+    cap_add:
       - NET_ADMIN
     restart: always
+    profiles:
+      - donotstart #do not start service
+
+  # mealie 
+  # Material design inspired recipe manager with category and tag management, shopping-lists, meal-planner, and site customizations. 
+  # Mealie is focused on simple user interactions to keep the whole family using the app.
+  # https://github.com/hay-kot/mealie
+  mealie-omni:
+    image: hkotel/mealie:omni-nightly
+    container_name: mealie
+    # profiles:
+    #   - donotstart #do not start service
+    ports:
+      - "9925:3000" #frontend
+      - "9924:9000" #API
+    volumes:
+      - ${SELF_HOME_DIR}/mealie:/app/data/
+    env_file:
+      - .env
+    environment:
+      - ALLOW_SIGNUP=true
+      # Database Settings
+      - DB_ENGINE=postgres
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=mealie
+      - BASE_URL=http://mealie.server.local
+      # Default Recipe Settings
+      - RECIPE_PUBLIC=true
+      - RECIPE_SHOW_NUTRITION=false
+      - RECIPE_SHOW_ASSETS=true
+      - RECIPE_LANDSCAPE_VIEW=true
+      - RECIPE_DISABLE_COMMENTS=true
+      - RECIPE_DISABLE_AMOUNT=false
+    restart: always
+
+  # Creater 
+  # Crater is an open-source web & mobile app that helps you track expenses, payments & create professional invoices & estimates.
+  # https://github.com/crater-invoice/crater
+  crater-app:
+    container_name: crater
+    image: shinsenter/crater:latest
+    volumes:
+      - ${SELF_HOME_DIR}/crater/web:/var/www/html
+      - ${SELF_HOME_DIR}/crater/ssl:/etc/ssl/web
+    environment:
+      REDIS_HOST: redis
+      # CRATER_QUEUE_ENABLED: true
+      # CRATER_QUEUE_OPTIONS: --timeout=60 --tries=3 redis
+      # CRATER_SCHEDULE_ENABLED: true
+    env_file:
+      - .env
+    ports:
+      - "9980:80"
+      - "9443:443"
+    depends_on:
+      - db
+      - redis
