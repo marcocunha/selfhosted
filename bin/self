@@ -93,6 +93,8 @@ function self:command:restart() {
 }
 
 function self:command:update() {
+    echo "Unlocking keychain..."
+    security -v unlock-keychain ~/Library/Keychains/login.keychain-db
     echo "Pulling latest images..."
     docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml pull
     echo "Building images..."
