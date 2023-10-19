@@ -12,7 +12,7 @@ services:
     privileged: true # this may not be necessary for all setups
     restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
-    shm_size: "64mb" # update for your cameras based on calculation above
+    shm_size: "128mb" # update for your cameras based on calculation above
     # profiles:
       # - donotstart #do not start service
     devices:

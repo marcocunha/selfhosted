@@ -1,0 +1,132 @@
+mqtt:
+  host: <MQTT_HOST>
+  user: <MQTT_USER>
+  password: <MQTT_PASSWORD>
+  enabled: True
+
+go2rtc:
+  streams:
+    Garage_High:
+      - ffmpeg:rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554/cam/realmonitor?channel=1&subtype=0
+    Garage_Low:
+      - ffmpeg:rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554:554/cam/realmonitor?channel=1&subtype=1
+  webrtc:
+    candidates:
+      - 192.168.1.146:8555
+      - stun:8555
+
+detectors:
+  ov:
+    type: openvino
+    device: AUTO
+    model:
+      path: /openvino-model/ssdlite_mobilenet_v2.xml
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+# Birdseye allows a heads-up view of your cameras to see what is going on around your property / space without having to watch all
+#cameras that may have nothing happening. Birdseye allows specific modes that intelligently show and disappear based on what you care about.
+# Include all cameras by default in Birdseye view
+birdseye:
+  enabled: False
+  mode: motion #   objects - cameras are included if they have had a tracked object within the last 30 seconds
+
+snapshots:
+  enabled: True
+  retain:
+    # Required: Default retention days (default: shown below)
+    default: 10
+    # Optional: Per object retention days
+    objects:
+      person: 15
+      car: 10
+      motorcycle: 10
+      bicycle: 10
+
+#Global Object Settings
+objects:
+  track:
+    - person
+    - car
+    - motorcycle
+    - bicycle
+  # filters:
+  #   person:
+  #     min_area: 5000
+  #     max_area: 100000
+
+record:
+  enabled: True
+  retain:
+    days: 2
+    mode: motion #With the motion option all segments for the duration of the event with motion would be saved. This means any segment where a car drove by in the street, person walked by, lighting changed, etc. would be saved.
+  events:
+    retain:
+      default: 5
+      mode: active_objects #With the active_objects it would only keep segments where the object was active. In this case the only segments that would be saved would be the ones where the car was driving up, you going inside, you coming outside, and the car driving away. Essentially reducing the 4 hours to a minute or two of event footage.
+
+detect:
+  stationary:
+    interval: 100 #interval is defined as the frequency for running detection on stationary objects. This means that by default once an object is considered stationary, detection will not be run on it until motion is detected. With interval > 0, every nth frames detection will be run to make sure the object is still there. NOTE: There is no way to disable stationary object tracking with this value.
+    threshold: 150 #threshold is the number of frames an object needs to remain relatively still before it is considered stationary.
+
+cameras:
+  Garage:
+    ffmpeg:
+      inputs:
+        # High Resolution Stream
+        - path: rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554/cam/realmonitor?channel=1&subtype=0
+          roles:
+            - record
+        # Low Resolution Stream
+        - path: rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554/cam/realmonitor?channel=1&subtype=1
+          roles:
+            - detect
+    detect:
+      width: 352 # <---- update for your camera's resolution
+      height: 288 # <---- update for your camera's resolution
+      fps: 5
+    snapshots:
+      required_zones:
+        - Garage_Front
+    record:
+      events:
+        required_zones:
+          - Garage_Front
+    mqtt:
+      required_zones:
+        - Garage_Front
+    objects:
+      track:
+        - person
+        - cat
+        - dog
+        - car
+        - motorcycle
+        - bicycle
+    zones:
+      Garage_Front:
+        coordinates: 122,35,330,288,88,288,76,37
+        objects:
+          - person
+          - car
+          - motorcycle
+          - bicycle
+          - cat
+          - dog
+        filters:
+          person:
+            # min_area: 5000
+            # max_area: 100000
+            threshold: 0.7
+    motion:
+      mask:
+        - 122,39,352,288,352,0,123,0
+    # Only include the "Garage" camera in Birdseye view when objects are detected
+    birdseye:
+      mode: objects
