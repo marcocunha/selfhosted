@@ -9,7 +9,7 @@ go2rtc:
     Garage_High:
       - ffmpeg:rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554/cam/realmonitor?channel=1&subtype=0
     Garage_Low:
-      - ffmpeg:rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554:554/cam/realmonitor?channel=1&subtype=1
+      - ffmpeg:rtsp://<USER>:<PASSWORD>@<CAMERA_IP>:554/cam/realmonitor?channel=1&subtype=1
   webrtc:
     candidates:
       - 192.168.1.146:8555
