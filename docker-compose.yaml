@@ -15,7 +15,9 @@ services:
     image: ghcr.io/ajnart/homarr:latest
     restart: unless-stopped
     volumes:
-      - ${SELF_HOME_DIR}/homarr:/app/data/configs
+      - ${SELF_HOME_DIR}/homarr/configs:/app/data/configs
+      - ${SELF_HOME_DIR}/homarr/data:/data
+      - ${SELF_HOME_DIR}/homarr/icons:/app/public/icons
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - '7575:7575'

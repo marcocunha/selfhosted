@@ -43,3 +43,7 @@ nginx-proxy-manager/letsencrypt/
 uptimekuma/
 homarr/default.json.bak
 paperless/data/
+whisper/
+piper/
+homarr/data/db.sqlite
+homarr/configs/default.json
