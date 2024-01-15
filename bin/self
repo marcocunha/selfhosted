@@ -73,6 +73,8 @@ function self:command:init() {
 }
 
 function self:command:start() {
+    echo "Unlocking keychain..."
+    security -v unlock-keychain ~/Library/Keychains/login.keychain-db
     echo "Starting containers..."
     docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
 }

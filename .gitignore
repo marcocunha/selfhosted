@@ -47,3 +47,5 @@ whisper/
 piper/
 homarr/data/db.sqlite
 homarr/configs/default.json
+codeprojectai/settings/
+diun/data/diun.db
