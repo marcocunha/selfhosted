@@ -21,7 +21,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${SELF_HOME_DIR}/frigate/config/:/config/
-      - "/Volumes/macOS Data/frigate/media:/media/frigate"
+      - "/Users/macmini/data/frigate/media:/media/frigate"
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:

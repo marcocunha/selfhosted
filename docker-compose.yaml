@@ -227,9 +227,9 @@ services:
       retries: 5
     volumes:
       - ${SELF_HOME_DIR}/paperless/data:/usr/src/paperless/data
-      - "/Volumes/macOS Data/paperless/media:/usr/src/paperless/media"
-      - "/Volumes/macOS Data/paperless/export:/usr/src/paperless/export"
-      - "/Volumes/macOS Data/paperless/consume:/usr/src/paperless/consume"
+      - "/Users/macmini/data/paperless/media:/usr/src/paperless/media"
+      - "/Users/macmini/data/paperless/export:/usr/src/paperless/export"
+      - "/Users/macmini/data/paperless/consume:/usr/src/paperless/consume"
     env_file:
       - .env
 
@@ -242,7 +242,7 @@ services:
     image: docker.io/gotenberg/gotenberg:7.8
     restart: unless-stopped
     ports:
-      - 9003:3000
+      - 9004:3000
 
     # The gotenberg chromium route is used to convert .eml files. We do not
     # want to allow external content like tracking pixels or even javascript.
