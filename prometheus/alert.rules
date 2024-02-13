@@ -13,7 +13,7 @@ groups:
 - name: host
   rules:
   - alert: high_cpu_load
-    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[1m])) / count(node_cpu_seconds_total{mode="user"}) * 100 > 50
+    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[1m])) / count(node_cpu_seconds_total{mode="user"}) * 100 > 60
     for: 30s
     labels:
       severity: warning
@@ -84,4 +84,27 @@ groups:
     annotations:
       summary: "Wireguard down"
       description: "Wireguard container is down for more than 30 seconds."
-
+  - alert: crater_down
+    expr: absent(container_memory_usage_bytes{name="crater"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Crater down"
+      description: "Crater container is down for more than 30 seconds."
+  - alert: paperless_down
+    expr: absent(container_memory_usage_bytes{name="paperless"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Paperless down"
+      description: "Paperless container is down for more than 30 seconds."
+  - alert: frigate_down
+    expr: absent(container_memory_usage_bytes{name="frigate"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Frigate down"
+      description: "Frigate container is down for more than 30 seconds."
