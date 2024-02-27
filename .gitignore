@@ -51,3 +51,4 @@ codeprojectai/settings/
 diun/data/diun.db
 frigate/config/
 !frigate/config.example.yml
+codeprojectai/modules/

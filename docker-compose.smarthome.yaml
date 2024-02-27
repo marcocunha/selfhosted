@@ -51,3 +51,25 @@ services:
       - "${SELF_HOME_DIR}/mosquitto/log:/mosquitto/log"
     env_file:
       - .env
+  # CodeProject.AI Server is a self-hosted, free and Open Source Artificial Intelligence Server for any platform, any language. 
+  # Just like you would install a database server to provide data storage, you install CodeProject.AI Server to provide AI services.
+  # https://www.codeproject.com/
+  CodeProjectAI:
+    container_name: codeproject-ai-server-cpu
+    image: codeproject/ai-server
+    restart: unless-stopped
+    volumes:
+      - ${SELF_HOME_DIR}/codeprojectai/settings:/etc/codeproject/ai
+      - ${SELF_HOME_DIR}/codeprojectai/modules:/app/modules
+    ports:
+      - "32168:32168"
+    # environment:
+    #   - "MODE=Low"
+    #   - "MODEL_SIZE=Small"
+    #   - "Modules:TextSummary:AutoStart=false"
+    #   - "Modules:ObjectDetectionNet:AutoStart=False"
+    #   - "Modules:ObjectDetectionYolo:AutoStart=True"
+    #   - "Modules:ObjectDetectionNet:EnvironmentVariables:MODEL_SIZE=Small"
+    #   - "Modules:ObjectDetectionYolo:EnvironmentVariables:MODEL_SIZE=Small"
+    env_file:
+      - .env
