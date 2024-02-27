@@ -13,7 +13,7 @@ groups:
 - name: host
   rules:
   - alert: high_cpu_load
-    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[1m])) / count(node_cpu_seconds_total{mode="user"}) * 100 > 60
+    expr: sum(rate(container_cpu_user_seconds_total{image!=""}[1m])) / count(node_cpu_seconds_total{mode="user"}) * 100 > 75
     for: 30s
     labels:
       severity: warning
