@@ -183,25 +183,23 @@ services:
       - RECIPE_DISABLE_AMOUNT=false
     restart: always
 
-  # Creater 
-  # Crater is an open-source web & mobile app that helps you track expenses, payments & create professional invoices & estimates.
-  # https://github.com/crater-invoice/crater
-  crater-app:
-    container_name: crater
-    image: shinsenter/crater:latest
-    volumes:
-      - ${SELF_HOME_DIR}/crater/web:/var/www/html
-      - ${SELF_HOME_DIR}/crater/ssl:/etc/ssl/web
-    environment:
-      REDIS_HOST: redis
-      # CRATER_QUEUE_ENABLED: true
-      # CRATER_QUEUE_OPTIONS: --timeout=60 --tries=3 redis
-      # CRATER_SCHEDULE_ENABLED: true
-    env_file:
-      - .env
+  # Invoice Shelf 
+  # InvoiceShelf is an open-source web & mobile app that helps you track expenses, payments & create professional invoices & estimates.
+  # https://github.com/InvoiceShelf/InvoiceShelf
+  invoiceshelf:
+    image: invoiceshelf/invoiceshelf
+    container_name: invoiceshelf
     ports:
       - "9980:80"
       - "9443:443"
+    volumes:
+      - ${SELF_HOME_DIR}/invoiceshelf/data:/data
+    env_file:
+      - .env
+    environment:
+      - STARTUP_DELAY=30
+      - REDIS_HOST=redis
+    restart: unless-stopped
     depends_on:
       - db
       - redis
