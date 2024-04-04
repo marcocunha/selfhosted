@@ -258,3 +258,23 @@ services:
     restart: unless-stopped
     ports:
       - "9998:9998"
+  # Lube Logger
+  # Self-Hosted, Open-Source, Unconventionally-Named Vehicle Maintenance Records and Fuel Mileage Tracker
+  # https://lubelogger.com/
+  lubelogger:
+    container_name: lubelogger
+    image: ghcr.io/hargata/lubelogger:latest
+    restart: unless-stopped
+    volumes:
+      - ${SELF_HOME_DIR}/lubelogger/config:/App/config
+      - ${SELF_HOME_DIR}/lubelogger/data:/App/data
+      - ${SELF_HOME_DIR}/lubelogger/translations:/App/wwwroot/translations
+      - ${SELF_HOME_DIR}/lubelogger/documents:/App/wwwroot/documents
+      - ${SELF_HOME_DIR}/lubelogger/images:/App/wwwroot/images
+      - ${SELF_HOME_DIR}/lubelogger/temp:/App/wwwroot/temp
+      - ${SELF_HOME_DIR}/lubelogger/log:/App/log
+      - ${SELF_HOME_DIR}/lubelogger/keys:/root/.aspnet/DataProtection-Keys
+    ports:
+      - 9083:8080
+    env_file:
+      - .env

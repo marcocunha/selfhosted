@@ -55,3 +55,7 @@ codeprojectai/modules/
 crater-bkp/
 invoiceshelf/data
 invoiceshelf/Modules/
+lubelogger/config/userConfig.json
+lubelogger/data/
+lubelogger/keys/
+lubelogger/images/
