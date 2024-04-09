@@ -110,6 +110,8 @@ function self:command:update() {
 function self:command:prune() {
     echo "Deletting all images not associated with a container..."
     docker system prune --volumes
+    echo "Removing all unused networks... Unused networks are those which are not referenced by any containers."
+    docker network prune -f
 }
 
 function self:command:password() {
