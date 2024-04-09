@@ -1,0 +1,29 @@
+api:
+  listen: ":1984"
+  base_path: ""
+  static_dir: ""
+  origin: ""
+
+streams:
+  garagem_high: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=1&subtype=0
+  garagem_low: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=1&subtype=1
+  frente_high: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=2&subtype=0
+  frente_low: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=2&subtype=1
+  piscina_high: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=3&subtype=0
+  piscina_low: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=3&subtype=1
+  traseiras_high: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=4&subtype=0
+  traseiras_low: rtsp://${RTSP_USER}:${RTSP_PASS}@192.168.1.108:554/cam/realmonitor?channel=4&subtype=1
+
+log:
+  format: ""
+  level: "info"
+
+rtsp:
+  listen: ":8554"
+  username: ${RTSP_USER:admin}   # "admin" if env "RTSP_USER" not set
+  password: ${RTSP_PASS:secret}  # "secret" if env "RTSP_PASS" not set
+
+webrtc:
+  candidates:
+    - 192.168.1.146:8555
+    - stun:8555

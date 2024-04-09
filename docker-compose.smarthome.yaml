@@ -28,9 +28,11 @@ services:
           size: 1000000000
     ports:
       - "5000:5000"
-      - "8554:8554" # RTSP feeds
-      - "8555:8555/tcp" # WebRTC over tcp
-      - "8555:8555/udp" # WebRTC over udp
+      #- "8554:8554" # RTSP feeds
+      #- "8555:8555/tcp" # WebRTC over tcp
+      #- "8555:8555/udp" # WebRTC over udp
+    # depends_on:
+    #   - codeproject-ai-server-cpu
     env_file:
       - .env
 
@@ -56,20 +58,35 @@ services:
   # https://www.codeproject.com/
   CodeProjectAI:
     container_name: codeproject-ai-server-cpu
-    image: codeproject/ai-server
+    image: codeproject/ai-server:2.5.4
     restart: unless-stopped
+    profiles:
+      - donotstart #do not start service
     volumes:
       - ${SELF_HOME_DIR}/codeprojectai/settings:/etc/codeproject/ai
       - ${SELF_HOME_DIR}/codeprojectai/modules:/app/modules
     ports:
       - "32168:32168"
-    # environment:
-    #   - "MODE=Low"
-    #   - "MODEL_SIZE=Small"
-    #   - "Modules:TextSummary:AutoStart=false"
-    #   - "Modules:ObjectDetectionNet:AutoStart=False"
-    #   - "Modules:ObjectDetectionYolo:AutoStart=True"
-    #   - "Modules:ObjectDetectionNet:EnvironmentVariables:MODEL_SIZE=Small"
-    #   - "Modules:ObjectDetectionYolo:EnvironmentVariables:MODEL_SIZE=Small"
+    env_file:
+      - .env
+
+  # go2rtc
+  # Ultimate camera streaming application with support RTSP, WebRTC, MJPEG, HomeKit, FFmpeg, etc.
+  # https://github.com/AlexxIT/go2rtc
+  go2rtc:
+    container_name: go2rtc
+    image: alexxit/go2rtc
+    #network_mode: host       # important for WebRTC, HomeKit, UDP cameras
+    privileged: true         # only for FFmpeg hardware transcoding
+    restart: unless-stopped  # autorestart on fail or config change from WebUI
+    volumes:
+      - "${SELF_HOME_DIR}/go2rtc:/config"   # folder for go2rtc.yaml file (edit from WebUI)
+    ports:
+      - "1984:1984" # API
+      - "8554:8554" # RTSP feeds
+      - "8555:8555/tcp" # WebRTC over tcp
+      - "8555:8555/udp" # WebRTC over udp
+    env_file:
+      - .env
     env_file:
       - .env
