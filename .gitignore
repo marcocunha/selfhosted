@@ -59,3 +59,14 @@ lubelogger/config/userConfig.json
 lubelogger/data/
 lubelogger/keys/
 lubelogger/images/
+lubelogger/documents/
+ollama/models/blobs/
+ollama/models/manifests/registry.ollama.ai/
+open-webui/cache/
+open-webui/vector_db/chroma.sqlite3
+open-webui/webui.db
+ollama/id_ed25519.pub
+ollama/id_ed25519
+ollama/history
+open-webui/litellm/config.yaml
+
