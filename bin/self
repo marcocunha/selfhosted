@@ -57,6 +57,7 @@ function self:command:help() {
   self docs                       start dev server for docs
   self ports                      show all ports in use
   self restartdocker              restart docker client
+  self arrip                      get the ip address being used by the arr-suite
     "
 }
 
@@ -76,7 +77,7 @@ function self:command:start() {
     echo "Unlocking keychain..."
     security -v unlock-keychain ~/Library/Keychains/login.keychain-db
     echo "Starting containers..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.arr.yaml -f docker-compose.yaml up -d
 }
 
 function self:command:stop() {
@@ -98,11 +99,11 @@ function self:command:update() {
     echo "Unlocking keychain..."
     security -v unlock-keychain ~/Library/Keychains/login.keychain-db
     echo "Pulling latest images..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml pull --ignore-pull-failures || true 
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.arr.yaml -f docker-compose.yaml pull --ignore-pull-failures || true 
     echo "Building images..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml build
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.arr.yaml -f docker-compose.yaml build
     echo "Starting containers..."
-    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.yaml up -d
+    docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.arr.yaml -f docker-compose.yaml up -d
     echo "Prune to free up space..."
     docker system prune --volumes -f
 }
@@ -134,8 +135,17 @@ function self:command:ports() {
 function self:command:restartdocker() {
     echo "Killing docker..."
     killall Docker
+    sleep 5
     echo "Starting docker..."
-    open /Applications/Docker.app
+    open --background -a /Applications/Docker.app &&
+        while ! docker system info > /dev/null 2>&1; do sleep 1; done &&
+        docker run busybox
+    #open /Applications/Docker.app
+    echo "Docker started!"
+}
+
+function self:command:arrip() {
+    docker run --rm --network=container:arr-suite-gluetun alpine:3.18 sh -c "apk add wget && wget -qO- https://ipinfo.io"
 }
 
 #

@@ -70,3 +70,5 @@ ollama/id_ed25519
 ollama/history
 open-webui/litellm/config.yaml
 
+arr-suite/configs/
+.arr.env

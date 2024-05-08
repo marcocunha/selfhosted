@@ -1,0 +1,172 @@
+version: "3.6"
+
+services:
+
+  # image used to index torrent links from the internet
+  prowlarr:
+    image: linuxserver/prowlarr:latest
+    container_name: arr-suite-prowlarr
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/prowlarr:/config" # database and Prowlarr configs
+    expose:
+      - 9696/tcp # web ui
+    ports:
+      - 9696:9696/tcp # web ui
+    restart: unless-stopped
+
+  # image used to scan for tv shows
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: arr-suite-sonarr
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/sonarr:/config" # database and Radarr configs
+      - "/Users/macmini/data/arr-suite/media:/media" # location of media and qbittorrent download folder
+    expose:
+      - 8989/tcp # web ui
+    ports:
+      - 8989:8989/tcp # web ui
+    restart: unless-stopped
+
+
+  # image used to scan for movies
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: arr-suite-radarr
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/radarr:/config"
+      - "/Users/macmini/data/arr-suite/media:/media" # location of media and qbittorrent download folder
+    expose:
+      - 7878/tcp # web ui
+    ports:
+      - 7878:7878/tcp # web ui
+    restart: unless-stopped
+
+
+  # image used to scan for music
+  lidarr:
+    image: linuxserver/lidarr:latest
+    container_name: arr-suite-lidarr
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/lidarr:/config"
+      - "/Users/macmini/data/arr-suite/media:/media" # location of media and qbittorrent download folder
+    expose:
+      - 8686/tcp # web ui
+    ports:
+      - 8686:8686/tcp # web ui
+    restart: unless-stopped
+
+
+  # manage and download subtitles
+  bazarr:
+    container_name: arr-suite-bazarr
+    image: 'linuxserver/bazarr:latest'
+    restart: unless-stopped
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/bazarr:/config"
+      - "/Users/macmini/data/arr-suite/media:/media" # location of media and qbittorrent download folder
+    ports:
+      - '6767:6767'
+
+  # image used to scan for books
+  readarr:
+    image: linuxserver/readarr:develop
+    container_name: arr-suite-readarr
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/readarr:/config"
+      - "/Users/macmini/data/arr-suite/media:/media" # location of media and qbittorrent download folder
+    expose:
+      - 8787/tcp # web ui
+    ports:
+      - 8787:8787/tcp # web ui
+    restart: unless-stopped
+
+  # image used to bypass cloudflare for prowlarr
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: arr-suite-flaresolverr
+    env_file:
+      - .arr.env
+    expose:
+      - 8191/tcp # listening port for selenium
+    ports:
+      - 8191:8191/tcp # web ui
+    restart: unless-stopped
+    #networks:
+    #  - proxy    
+
+  # image used for vpn killswitch network
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: arr-suite-gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8083:8083 # qbittorrent http web ui
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/gluetun:/gluetun"
+    restart: unless-stopped
+    
+  # image used to download stuff; run over gluetun network (vpn killswitch)
+  qbittorrent:
+    image: linuxserver/qbittorrent:latest
+    container_name: arr-suite-qbittorrent
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/qbittorrent:/config"
+      - "/Users/macmini/data/arr-suite/media/downloads:/media/downloads"
+    depends_on:
+      - gluetun
+    network_mode: container:arr-suite-gluetun # use the gluetun container network (vpn killswitch)
+    restart: unless-stopped
+
+  # image used to manage media and stream it
+  emby:
+    image: linuxserver/emby:latest
+    container_name: arr-suite-emby
+    env_file:
+      - .arr.env
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/emby:/config" # emby data storage location; can grow very large
+      - "/Users/macmini/data/arr-suite/media:/data" # media goes here
+      #- ${DOCKER_VOLUME_STORAGE:-/mnt/docker-volumes}/arr-suite/configs/emby/lib:/opt/vc/lib # optional; path for Raspberry Pi OpenMAX libs
+    expose:
+      - 8096/tcp # http web ui
+      - 8920/tcp # https web ui
+    ports:
+      - 8096:8096/tcp # http web ui
+    #devices:
+    #  - /dev/dri:/dev/dri #optional
+    #  - /dev/vchiq:/dev/vchiq #optional
+    #  - /dev/video10:/dev/video10 #optional
+    #  - /dev/video11:/dev/video11 #optional
+    #  - /dev/video12:/dev/video12 #optional
+    restart: unless-stopped
+
+  # free and open source fork of Overseerr for managing requests for your media library
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: arr-suite-jellyseerr
+    environment:
+      - JELLYFIN_TYPE=emby
+    ports:
+      - 5055:5055
+    volumes:
+      - "${SELF_HOME_DIR}/arr-suite/configs/jellyseerr:/app/config"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
