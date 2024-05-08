@@ -1,5 +1,5 @@
 #-------------------------------------------------------------
-# Docker compose related with servers
+# Docker compose related to servers
 #-------------------------------------------------------------
 version: '3.8'
 
@@ -11,7 +11,7 @@ services:
     image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
     profiles:
-    - donotstart #do not start service
+      - donotstart #do not start service
     ports:
       - 80:80 # HTTP port
       - 443:443 # HTTPS port
@@ -36,8 +36,8 @@ services:
     container_name: wg-easy
     image: weejewel/wg-easy
     restart: unless-stopped
-    # profiles:
-    #   - donotstart #do not start service
+    profiles:
+      - donotstart #do not start service
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
@@ -73,6 +73,8 @@ services:
     container_name: adguardhome
     image: adguard/adguardhome
     restart: unless-stopped
+    profiles:
+      - donotstart #do not start service
     ports:
       - "53:53/tcp" #plain DNS
       - "53:53/udp" #plain DNS

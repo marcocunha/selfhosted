@@ -1,5 +1,5 @@
 #-------------------------------------------------------------
-# Docker compose
+# Multi-purpose Docker compose
 #-------------------------------------------------------------
 version: '3.8'
 
@@ -258,6 +258,7 @@ services:
     restart: unless-stopped
     ports:
       - "9998:9998"
+
   # Lube Logger
   # Self-Hosted, Open-Source, Unconventionally-Named Vehicle Maintenance Records and Fuel Mileage Tracker
   # https://lubelogger.com/

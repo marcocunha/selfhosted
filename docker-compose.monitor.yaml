@@ -1,5 +1,5 @@
 #-------------------------------------------------------------
-# Docker compose related with monitoring services
+# Docker compose related to monitoring services
 #-------------------------------------------------------------
 version: '3.8'
 

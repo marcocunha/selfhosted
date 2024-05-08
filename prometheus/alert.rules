@@ -76,14 +76,14 @@ groups:
     annotations:
       summary: "Duplicati is down"
       description: "Duplicati container is down for more than 30 seconds."
-  - alert: wireguard_down
-    expr: absent(container_memory_usage_bytes{name="wg-easy"})
-    for: 30s
-    labels:
-      severity: critical
-    annotations:
-      summary: "Wireguard down"
-      description: "Wireguard container is down for more than 30 seconds."
+  #- alert: wireguard_down
+  #  expr: absent(container_memory_usage_bytes{name="wg-easy"})
+  #  for: 30s
+  #  labels:
+  #    severity: critical
+  #  annotations:
+  #    summary: "Wireguard down"
+  #    description: "Wireguard container is down for more than 30 seconds."
   - alert: invoiceshelf_down
     expr: absent(container_memory_usage_bytes{name="invoiceshelf"})
     for: 30s

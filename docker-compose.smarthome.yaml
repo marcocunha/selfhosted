@@ -1,5 +1,5 @@
 #-------------------------------------------------------------
-# Docker compose related with smart home services
+# Docker compose related to smart home services
 #-------------------------------------------------------------
 version: '3.8'
 
@@ -95,7 +95,7 @@ services:
   ollama:
     container_name: ollama
     image: ollama/ollama:latest
-    pull_policy: always
+    #pull_policy: always
     restart: always
     ports:
       - 11434:11434
