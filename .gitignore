@@ -69,6 +69,11 @@ ollama/id_ed25519.pub
 ollama/id_ed25519
 ollama/history
 open-webui/litellm/config.yaml
-
 arr-suite/configs/
 .arr.env
+music-assistant-server/data/
+n8n/*.log
+n8n/config
+n8n/*.sqlite
+nodered/data/
+

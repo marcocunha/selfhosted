@@ -119,3 +119,16 @@ services:
     environment:
       - '/ollama/api=http://ollama:11434/api'
     restart: unless-stopped
+
+  # Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
+  # https://nodered.org/
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    restart: unless-stopped
+    ports:
+      - "1880:1880/tcp"
+    environment:
+      - TZ=Europe/Brussels
+    volumes:
+      - "${SELF_HOME_DIR}/nodered/data:/data"

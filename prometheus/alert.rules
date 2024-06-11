@@ -76,14 +76,6 @@ groups:
     annotations:
       summary: "Duplicati is down"
       description: "Duplicati container is down for more than 30 seconds."
-  #- alert: wireguard_down
-  #  expr: absent(container_memory_usage_bytes{name="wg-easy"})
-  #  for: 30s
-  #  labels:
-  #    severity: critical
-  #  annotations:
-  #    summary: "Wireguard down"
-  #    description: "Wireguard container is down for more than 30 seconds."
   - alert: invoiceshelf_down
     expr: absent(container_memory_usage_bytes{name="invoiceshelf"})
     for: 30s
@@ -108,3 +100,100 @@ groups:
     annotations:
       summary: "Frigate down"
       description: "Frigate container is down for more than 30 seconds."
+  - alert: qbittorrent_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-qbittorrent"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "QBittorrent down"
+      description: "QBittorrent container is down for more than 30 seconds."
+  - alert: gluetun_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-gluetun"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Gluetun down"
+      description: "Gluetun container is down for more than 30 seconds."
+  - alert: flaresolverr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-flaresolverr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "FlareSolverr down"
+      description: "FlareSolverr container is down for more than 30 seconds."
+  - alert: jellyseerr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-jellyseerr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "JellySeerr down"
+      description: "JellySeerr container is down for more than 30 seconds."
+  - alert: readarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-readarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Readarr down"
+      description: "Readarr container is down for more than 30 seconds."
+  - alert: prowlarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-prowlarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Prowlarr down"
+      description: "Prowlarr container is down for more than 30 seconds."
+  - alert: lidarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-lidarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Lidarr down"
+      description: "Lidarr container is down for more than 30 seconds."
+  - alert: sonarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-sonarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Sonarr down"
+      description: "Sonarr container is down for more than 30 seconds."
+  - alert: emby_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-emby"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Emby down"
+      description: "Emby container is down for more than 30 seconds."
+  - alert: radarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-radarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Radarr down"
+      description: "Radarr container is down for more than 30 seconds."
+  - alert: bazarr_down
+    expr: absent(container_memory_usage_bytes{name="arr-suite-bazarr"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Bazarr down"
+      description: "Bazarr container is down for more than 30 seconds."
+  - alert: nodered_down
+    expr: absent(container_memory_usage_bytes{name="nodered"})
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Node-RED down"
+      description: "Node-RED container is down for more than 30 seconds."
+

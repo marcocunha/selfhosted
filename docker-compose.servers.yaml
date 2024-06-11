@@ -7,11 +7,11 @@ services:
   # Nginx Proxy Manager
   # Nice and simple Nginx UI for managing reverse proxy
   nginx:
+    profiles:
+      - donotstart #do not start service
     container_name: nginx
     image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
-    profiles:
-      - donotstart #do not start service
     ports:
       - 80:80 # HTTP port
       - 443:443 # HTTPS port
@@ -33,11 +33,11 @@ services:
   # WireGuard is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography
   # Be sure to forward UDP port 51820 from your router.
   wg-easy:
+    profiles:
+        - donotstart #do not start service
     container_name: wg-easy
     image: weejewel/wg-easy
     restart: unless-stopped
-    profiles:
-      - donotstart #do not start service
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
@@ -70,11 +70,11 @@ services:
   # AdGuard Home
   # Free and open source, powerful network-wide ads & trackers blocking DNS server.
   adguardhome:
+    profiles:
+      - donotstart #do not start service
     container_name: adguardhome
     image: adguard/adguardhome
     restart: unless-stopped
-    profiles:
-      - donotstart #do not start service
     ports:
       - "53:53/tcp" #plain DNS
       - "53:53/udp" #plain DNS
