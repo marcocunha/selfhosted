@@ -148,14 +148,6 @@ groups:
     annotations:
       summary: "Prowlarr down"
       description: "Prowlarr container is down for more than 30 seconds."
-  - alert: lidarr_down
-    expr: absent(container_memory_usage_bytes{name="arr-suite-lidarr"})
-    for: 30s
-    labels:
-      severity: critical
-    annotations:
-      summary: "Lidarr down"
-      description: "Lidarr container is down for more than 30 seconds."
   - alert: sonarr_down
     expr: absent(container_memory_usage_bytes{name="arr-suite-sonarr"})
     for: 30s

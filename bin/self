@@ -106,6 +106,8 @@ function self:command:update() {
     docker compose -f docker-compose.monitor.yaml -f docker-compose.servers.yaml -f docker-compose.db.yaml -f docker-compose.smarthome.yaml -f docker-compose.arr.yaml -f docker-compose.yaml up -d
     echo "Prune to free up space..."
     docker system prune --volumes -f
+    echo "Removing all unused networks... Unused networks are those which are not referenced by any containers."
+    docker network prune -f
 }
 
 function self:command:prune() {
