@@ -52,6 +52,8 @@ services:
   lidarr:
     image: linuxserver/lidarr:latest
     container_name: arr-suite-lidarr
+    profiles:
+      - donotstart
     env_file:
       - .arr.env
     volumes:
@@ -103,8 +105,6 @@ services:
     ports:
       - 8191:8191/tcp # web ui
     restart: unless-stopped
-    #networks:
-    #  - proxy    
 
   # image used for vpn killswitch network
   gluetun:
@@ -143,7 +143,6 @@ services:
     volumes:
       - "${SELF_HOME_DIR}/arr-suite/configs/emby:/config" # emby data storage location; can grow very large
       - "/Users/macmini/data/arr-suite/media:/data" # media goes here
-      #- ${DOCKER_VOLUME_STORAGE:-/mnt/docker-volumes}/arr-suite/configs/emby/lib:/opt/vc/lib # optional; path for Raspberry Pi OpenMAX libs
     expose:
       - 8096/tcp # http web ui
       - 8920/tcp # https web ui
