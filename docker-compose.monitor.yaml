@@ -230,6 +230,22 @@ services:
       - "LOG_JSON=false"
     restart: always    
 
+  # Docker Autoheal
+  # Monitor and restart unhealthy docker containers. 
+  # This functionality was proposed to be included with the addition of HEALTHCHECK, however didn't make the cut. This container is a stand-in till there is native support for --exit-on-unhealthy moby/moby#22719.
+  # https://github.com/willfarrell/docker-autoheal
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: autoheal
+    deploy:
+      replicas: 1
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+    network_mode: none
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
 networks:
   monitor-net:
     driver: bridge

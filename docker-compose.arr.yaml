@@ -118,7 +118,20 @@ services:
       - .arr.env
     volumes:
       - "${SELF_HOME_DIR}/arr-suite/configs/gluetun:/gluetun"
-    restart: unless-stopped
+    restart: always
+    healthcheck:
+      # Check whether service is ready
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- https://ipinfo.io | grep -q '\"country\": \"ES\"'",
+        ]
+      interval: 30s
+      retries: 5
+      timeout: 1m
+      start_period: 2m
+    labels:
+      autoheal: true
     
   # image used to download stuff; run over gluetun network (vpn killswitch)
   qbittorrent:
@@ -130,9 +143,10 @@ services:
       - "${SELF_HOME_DIR}/arr-suite/configs/qbittorrent:/config"
       - "/Users/macmini/data/arr-suite/media/downloads:/media/downloads"
     depends_on:
-      - gluetun
+      gluetun:
+        condition: service_healthy
     network_mode: container:arr-suite-gluetun # use the gluetun container network (vpn killswitch)
-    restart: unless-stopped
+    restart: always
 
   # image used to manage media and stream it
   emby:
