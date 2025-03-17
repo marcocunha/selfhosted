@@ -6,21 +6,7 @@ portainer
 grafana/data
 prometheus/data
 .n8n/config
-postgres/pg_hba.conf
-postgres/pg_ident.conf
-postgres/postgresql.auto.conf
-postgres/postmaster.opts
-postgres/base/
-postgres/global/
-postgres/pg_logical/
-postgres/pg_multixact/
-postgres/pg_stat_tmp/
-postgres/pg_xact/
-postgres/pg_subtrans/
-postgres/postmaster.pid
-postgres/pg_wal/
-postgres/pg_notify/
-postgres/pg_stat/
+postgres/
 mosquitto/data/
 mosquitto/log/
 changedetection/data/
@@ -76,4 +62,13 @@ n8n/*.log
 n8n/config
 n8n/*.sqlite
 nodered/data/
-
+postgres_16/
+actual-data/server-files/
+actual-data/.migrate
+actual-data/user-files/
+stirling-pdf/
+keyboard_maestro/Keyboard Maestro Macros.kmsync
+backups
+elasticsearch/data/
+kibana/config/kibana.keystore
+fluentd/conf/fluent.conf
