@@ -66,6 +66,8 @@ services:
     volumes:
       - ${SELF_HOME_DIR}/prometheus:/etc/prometheus
       - ${SELF_HOME_DIR}/prometheus/data:/prometheus
+    profiles:
+    - donotstart #do not start service
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -91,6 +93,8 @@ services:
   alertmanager:
     container_name: alertmanager
     image: prom/alertmanager:v0.20.0
+    profiles:
+      - donotstart #do not start service
     volumes:
       - ${SELF_HOME_DIR}/alertmanager:/etc/alertmanager
     command:
@@ -111,6 +115,8 @@ services:
   nodeexporter:
     image: prom/node-exporter:latest
     container_name: nodeexporter
+    profiles:
+      - donotstart #do not start service
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -136,6 +142,8 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
     container_name: cadvisor
+    profiles:
+      - donotstart #do not start service
     privileged: true
     volumes:
       - /:/rootfs:ro
@@ -163,6 +171,8 @@ services:
   pushgateway:
     container_name: pushgateway
     image: prom/pushgateway
+    profiles:
+      - donotstart #do not start service
     restart: unless-stopped
     expose:
       - 9091
@@ -178,6 +188,8 @@ services:
   caddy:
     image: stefanprodan/caddy
     container_name: caddy
+    profiles:
+      - donotstart #do not start service
     ports:
       - "3000:3000"
       - "9090:9090"
@@ -228,7 +240,83 @@ services:
       - "DIUN_WATCH_SCHEDULE=0 19 * * FRI,SAT,SUN"
       - "LOG_LEVEL=info"
       - "LOG_JSON=false"
-    restart: always    
+    restart: always
+
+  # Fleuntd
+  # Fluentd is an open-source data collector for a unified logging layer. 
+  # Fluentd allows you to unify data collection and consumption for better use and understanding of data.
+  # https://www.fluentd.org/
+  fluentd:
+    build: "${SELF_HOME_DIR}/fluentd"
+    profiles:
+      - donotstart #do not start service
+    volumes:
+      - "${SELF_HOME_DIR}/fluentd/conf:/fluentd/etc"
+    depends_on:
+      # Launch fluentd after that elasticsearch is ready to connect
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
+  # Elastic Search
+  # Elasticsearch is an open source distributed, RESTful search and analytics engine, scalable data store, 
+  # and vector database capable of addressing a growing number of use cases.
+  # https://www.elastic.co/elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.2
+    container_name: elasticsearch
+    profiles:
+      - donotstart #do not start service
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Disable security for testing
+    volumes:
+      - "${SELF_HOME_DIR}/elasticsearch/data:/usr/share/elasticsearch/data"
+      - "${SELF_HOME_DIR}/elasticsearch/config/elasticsearch.yml:/etc/elasticsearch/config/elasticsearch.yml"
+    env_file:
+      - .env
+    healthcheck:
+      # Check whether service is ready
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 30s
+      retries: 5
+      timeout: 1m
+      start_period: 10m
+    ports:
+      - 9200:9200
+
+  # Kibana
+  # Kibana is a data visualization and exploration tool used for log and time-series analytics, application monitoring, and operational intelligence use cases. 
+  # It offers powerful and easy-to-use features such as histograms, line graphs, pie charts, heat maps, and built-in geospatial support.
+  # https://www.elastic.co/kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.2
+    container_name: kibana
+    profiles:
+      - donotstart #do not start service
+    env_file:
+      - .env
+    volumes:
+      - "${SELF_HOME_DIR}/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml"
+    depends_on:
+      # Launch kibana after that elasticsearch is ready to connect
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      # Check whether service is ready
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 30s
+      retries: 5
+      timeout: 1m
+      start_period: 5m
+    ports:
+      - "5601:5601"
 
   # Docker Autoheal
   # Monitor and restart unhealthy docker containers. 
@@ -246,6 +334,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
+
 networks:
   monitor-net:
     driver: bridge

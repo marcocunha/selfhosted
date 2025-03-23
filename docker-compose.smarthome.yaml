@@ -13,8 +13,8 @@ services:
     restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
     shm_size: "128mb" # update for your cameras based on calculation above
-    # profiles:
-      # - donotstart #do not start service
+    profiles:
+      - donotstart #do not start service
     devices:
       # - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
       - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
@@ -31,37 +31,71 @@ services:
       #- "8554:8554" # RTSP feeds
       #- "8555:8555/tcp" # WebRTC over tcp
       #- "8555:8555/udp" # WebRTC over udp
-    # depends_on:
+    depends_on:
+      - go2rtc
     #   - codeproject-ai-server-cpu
     env_file:
       - .env
 
-  # Mosquitto
-  # Message broker that implements the MQTT protocol 
-  mosquitto:
-    container_name: mosquitto
-    image: eclipse-mosquitto
-    restart: unless-stopped
+  ## wyoming
+  # Whisper
+  # Whisper is an open source speech-to-text model created by OpenAI that runs locally.
+  # https://github.com/openai/whisper
+  # https://github.com/home-assistant/addons/blob/master/whisper/DOCS.md
+  wyoming-whisper-en:
     profiles:
       - donotstart #do not start service
-    ports:
-      - "1883:1883"
-      - "1884:1884"
+    container_name: whisper-en
+    image: rhasspy/wyoming-whisper
+    restart: unless-stopped
     volumes:
-      - "${SELF_HOME_DIR}/mosquitto/config:/mosquitto/config"
-      - "${SELF_HOME_DIR}/mosquitto/data:/mosquitto/data"
-      - "${SELF_HOME_DIR}/mosquitto/log:/mosquitto/log"
+      - ${SELF_HOME_DIR}/whisper/english:/data
+    command: --model tiny-int8 --language en
+    env_file:
+      - .env
+    ports:
+      - 10300:10300
+  wyoming-whisper-pt:
+    profiles:
+      - donotstart #do not start service
+    container_name: whisper-pt
+    image: rhasspy/wyoming-whisper
+    restart: unless-stopped
+    volumes:
+      - ${SELF_HOME_DIR}/whisper/portuguese:/data
+    command: --model tiny-int8 --language pt
+    env_file:
+      - .env
+    ports:
+      - 10301:10300
+    # profiles:
+    #   - donotstart #do not start service
+
+  # Piper
+  # A fast, local neural text to speech system that sounds great and is optimized for the Raspberry Pi 4.
+  # https://github.com/rhasspy/piper
+  wyoming-piper-en:
+    profiles:
+      - donotstart #do not start service
+    container_name: piper-en
+    image: rhasspy/wyoming-piper
+    restart: unless-stopped
+    command: --voice en-us-ryan-medium
+    volumes:
+      - ${SELF_HOME_DIR}/piper/english:/data
+    ports:
+      - 10200:10200
     env_file:
       - .env
   # CodeProject.AI Server is a self-hosted, free and Open Source Artificial Intelligence Server for any platform, any language. 
   # Just like you would install a database server to provide data storage, you install CodeProject.AI Server to provide AI services.
   # https://www.codeproject.com/
   CodeProjectAI:
+    profiles:
+      - donotstart #do not start service
     container_name: codeproject-ai-server-cpu
     image: codeproject/ai-server:2.5.4
     restart: unless-stopped
-    profiles:
-      - donotstart #do not start service
     volumes:
       - ${SELF_HOME_DIR}/codeprojectai/settings:/etc/codeproject/ai
       - ${SELF_HOME_DIR}/codeprojectai/modules:/app/modules
@@ -93,6 +127,8 @@ services:
   # With Ollama, all your interactions with large language models happen locally without sending private data to third-party services
   # https://ollama.com/
   ollama:
+    profiles:
+      - donotstart #do not start service
     container_name: ollama
     image: ollama/ollama:latest
     #pull_policy: always
@@ -108,6 +144,8 @@ services:
   # Open WebUI is an extensible, feature-rich, and user-friendly self-hosted WebUI designed to operate entirely offline. It supports various LLM runners, including Ollama and OpenAI-compatible APIs. 
   # https://github.com/open-webui/open-webui
   open-webui:
+    profiles:
+      - donotstart #do not start service
     container_name: open-webui
     image: ghcr.io/open-webui/open-webui:main
     volumes:
