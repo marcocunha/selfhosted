@@ -5,7 +5,7 @@
 # echo 'export SELF_HOME_DIR="/selfhosted"' >> ~/.bashrc
 # echo 'export PATH="$PATH:$SELF_HOME_DIR/bin"' >> ~/.bashrc
 # source ~/.bashrc
-#
+# chmod +x bin/self 
 #
 
 COMMAND="$1"
